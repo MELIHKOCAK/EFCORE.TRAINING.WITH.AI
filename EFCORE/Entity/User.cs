@@ -8,5 +8,14 @@ public class User
     public char Gender { get; set; }
     public string Mail { get; set; }
     public string PhoneNumber { get; set; }
+
+    //Foreign Key
+    public int AddressId { get; set; }
+
+    //Navigation Property
+    public Address Address { get; set; }
+    public ICollection<Deposit> Deposits { get; set; }
+
+
 }
 

@@ -9,5 +9,11 @@ public class Address
     public string Street { get; set; }
     public string BuildingNo { get; set; }
     public string ZipCode { get; set; }
+
+
+
+    //Navigation Properties
+    public Library Library { get; set; }
+    public ICollection<User> Users { get; set; }
 }
 
