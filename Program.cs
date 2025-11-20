@@ -1,4 +1,11 @@
-﻿static void Main(string args)
+﻿namespace EFCORE.TRAINING.WITH.AI
 {
-
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            
+        }
+    }
 }
+

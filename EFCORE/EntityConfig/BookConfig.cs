@@ -36,11 +36,11 @@ internal class BookConfig : IEntityTypeConfiguration<Book>
             .UsingEntity<Dictionary<string, object>>(
                 "LibraryBooks",
                 x => x.HasOne<Library>().WithMany().HasForeignKey("LibraryId").HasConstraintName("FK_LibraryId"),
-                x => x.HasOne<Book>().WithMany().HasForeignKey("BookId").HasConstraintName("FK_BookID"),
+                x => x.HasOne<Book>().WithMany().HasForeignKey("BookId").HasConstraintName("FK_BookID").OnDelete(DeleteBehavior.Restrict),
 
                 join =>
                 {
-                    join.Property<int>("Count").HasDefaultValueSql("int");
+                    join.Property<int>("Count");
                 }
             );
         #endregion
