@@ -24,6 +24,10 @@ Bu proje geliştirilirken aşağıdaki konular üzerinde durulmuştur:
 
 Proje tamamlanınca paylaşılacaktır.
 
+## 🧑‍💻 Projede Kullanılan Veri Tabanının ER Diyagramı
+<img width="1215" height="715" alt="GITHUBEFCOREWITHAIDIAGRAM drawio" src="https://github.com/user-attachments/assets/7b2e4bbf-b2c3-4e9a-b993-1cc689852e48" />
+
+
 ## 📝 Lisans
 
 Bu proje [MIT Lisansı](LICENSE) ile lisanslanmıştır.
