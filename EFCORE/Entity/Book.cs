@@ -9,10 +9,9 @@ public class Book
     public DateOnly PublishedDate { get; set; }
 
     //Foreign Key
-    public int DepositId { get; set; }
 
     //Navigation Property
-    public Deposit Deposit { get; set; }
+    public ICollection<Deposit> Deposit { get; set; }
     public ICollection<Category> Categories { get; set; }
     public ICollection<Author> Author { get; set; }
     public ICollection<Library> Libraries { get; set; }

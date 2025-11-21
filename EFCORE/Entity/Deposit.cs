@@ -8,10 +8,11 @@ public class Deposit
 
     //Foreign Key
     public int UserId { get; set; }
+    public int BookId { get; set; }
 
     //Navigation Property
     public User User { get; set; }
 
-    public ICollection<Book> Books { get; set; }
+    public Book Book { get; set; }
 }
 

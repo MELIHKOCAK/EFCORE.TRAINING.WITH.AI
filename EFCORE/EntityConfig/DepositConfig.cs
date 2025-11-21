@@ -28,9 +28,9 @@ namespace EFCORE.TRAINING.WITH.AI.EFCORE.EntityConfig
             #endregion
 
             //Relationship
-            builder.HasMany(d => d.Books)
-                .WithOne(b => b.Deposit)
-                .HasForeignKey(b => b.DepositId);
+            builder.HasOne(d => d.Book)
+                .WithMany(b => b.Deposit)
+                .HasForeignKey(b =>b.BookId);
 
         }
     }
