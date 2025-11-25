@@ -1,7 +1,9 @@
-﻿using EFCORE.TRAINING.WITH.AI.EFCORE;
+﻿using Azure;
+using EFCORE.TRAINING.WITH.AI.EFCORE;
 using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
 
 namespace EFCORE.TRAINING.WITH.AI
 {
@@ -9,8 +11,8 @@ namespace EFCORE.TRAINING.WITH.AI
     {
         static void Main(string[] args)
         {
-            //Gemini Link: https://gemini.google.com/share/a2ce82588876
-            
+            //Chat's Link On Gemini: https://gemini.google.com/share/a2ce82588876
+
             //Created Context Instance
             eKutuphaneWithAIDbContext context = new();
 
@@ -190,39 +192,52 @@ namespace EFCORE.TRAINING.WITH.AI
 
             #endregion
 
+
+            //@TODO: Soruları query syntax ile tekrardan çöz.
+            //@TODO: 6. 7. Soruların SQL karşılıklarınıda yaz
             //Questions
             #region GEMINI Soru 1: Ekleme (Create) - Yeni Bir Üye Kaydı
+
+            //QUESTION
             /*
              Yeni bir üye kütüphaneye kaydoluyor. Görev: UYELER tablosuna aşağıdaki bilgilere
              sahip yeni bir üye kaydı ekleyin. Adres bilgisini boş bırakabilirsiniz 
              (çünkü ilişki 1-1 olsa da, adres verisi ayrı bir işlemde eklenebilir). 
             */
 
-            /*
-            User newUser = new User()
-            {
-                Name = "Ayşe",
-                Surname = "Yılmaz",
-                Gender = 'K',
-                Mail = "ayse.yilmaz@ornek.com",
-                PhoneNumber = "5321112233",
-                AddressId = 1
-            };
 
-            context
-            .Users
-            .Add(newUser);
+            //ANSWER
+            /*
+                User newUser = new User()
+                {
+                    Name = "Ayşe",
+                    Surname = "Yılmaz",
+                    Gender = 'K',
+                    Mail = "ayse.yilmaz@ornek.com",
+                    PhoneNumber = "5321112233",
+                    AddressId = 1
+                };
+
+            context.Users.Add(newUser);
             context.SaveChanges();
+            */
+
+
+            //SQL KARŞILIĞI
+            /*
+                INSERT INTO USER 
+                VALUES('Ayşe', 'Yılmaz', 'K', 'ayse.yilmaz@ornek.com','5321112233',1)
             */
             #endregion
 
             #region GEMINI Soru 2: Okuma (Read) - Temel Listeleme
+            //QUESTION
             /*
              KATEGORILER tablosundaki tüm kategorilerin ID'sini ve Ad'ını listeleyen
              bir sorgu yazın. Sorguyu, kategori adına göre alfabetik olarak sıralayın.
             */
 
-
+            //ANSWER
             /*
             var questionTwo = context
                 .Categories
@@ -233,14 +248,21 @@ namespace EFCORE.TRAINING.WITH.AI
             foreach (var item in questionTwo)
                 Console.WriteLine($"{item.Id}, {item.Name}");
             */
+
+            //SQL Karşılığı
+            /*
+                SELECT ID, NAME FROM Categories ORDER BY NAME
+            */
             #endregion
 
             #region GEMINI Soru 3: Güncelleme (Update) - Yazar Adı Düzeltme
+            //Question
             /*
                 ID'si 5 olan yazarın Ad bilgisini "Mehmet" yerine "Ahmet" olarak güncelleyen 
                 ve bu değişikliği veritabanına kaydeden kodu yazın. (ID 5'in var olduğunu varsayıyoruz).
             */
 
+            //Answer
             /*
             var questionThree = context
             .Authors
@@ -250,14 +272,22 @@ namespace EFCORE.TRAINING.WITH.AI
 
             context.SaveChanges();
             */
+
+            //SQL Karşılığı
+            /*
+                UPDATE AUTHORS SET NAME = 'AHMET' WHERE ID = 5
+            */
             #endregion
 
             #region GEMINI Soru 4: Silme (Delete) - Eski Bir Kitabı Kaldırma
+
+            //QUESTION
             /*
              * ID'si 10 olan kitabı KITAPLAR tablosundan veritabanından tamamen silen kodu yazın.
              * (ID 10'un var olduğunu ve ilişkisel kısıtlamaların buna izin verdiğini varsayıyoruz).
              */
 
+            //ANSWER
             /*
             var questionFour = context
             .Books
@@ -265,15 +295,23 @@ namespace EFCORE.TRAINING.WITH.AI
             context.Books.Remove(questionFour!);
             context.SaveChanges();
             */
+
+            //SQL Karşılığı
+            /*
+                DELETE FROM BOOKS WHERE ID = 10
+            */
             #endregion
 
             #region GEMINI Soru 5: Okuma (Read) - Koşullu Filtreleme
+
+            //QUESTION
             /*
              * Soru 5: KITAPLAR tablosundan Yayın Tarihi 2020 yılından büyük veya eşit olan
              * (yani YayinTarihi >= 2020) tüm kitapların Ad ve ISBN bilgilerini listeleyen
              * bir sorgu yazın. 
              */
 
+            //ANSWER
             /*
             var questionFive = context
                 .Books
@@ -284,9 +322,161 @@ namespace EFCORE.TRAINING.WITH.AI
             foreach (var item in questionFive)
                 Console.WriteLine($"{item.Name}, {item.ISBN}");
             */
+
+            //SQL KARŞILIĞI
+            /*
+              
+             SELECT NAME, ISBN FROM BOOKS WHERE PublishedDate >= '2020'
+            */
+            #endregion
+
+            #region GEMINI Soru 6: İlişkisel Sorgulama (Inner Join)
+
+            //QUESTION
+            /*
+             Henüz teslim edilmemiş olan (yani TeslimTarihi alanı NULL olan) tüm emanet
+            kayıtlarını listeleyin.
+            */
+
+            //ANSWER
+            /*
+                var result = context
+                    .Users
+                    .Join(context.Deposits, u => u.Id, d => d.UserId, (x, y) => new
+                {
+                    UserName = x.Name,
+                    UserSurname = x.Surname,
+                    DepositDate = y.DepositDate,
+                    BookId = y.BookId,
+                    DeliveryDate = y.DeliveryDate
+                })
+                    .Join(context.Books, d => d.BookId, b => b.Id, (x, y) => new
+                {
+                    UserName = x.UserName,
+                    UserSurname = x.UserSurname,
+                    DepositDate = x.DepositDate,
+                    BookName = y.Name,
+                    DeliveryDate = x.DeliveryDate
+                })
+                .Where(c => c.DeliveryDate.Year > 2020)
+                .AsNoTracking()
+                .ToList();
+            */
+            #endregion
+
+            #region GEMINI Soru 7: Çoklu İlişki Ekleme (Many-to-Many)
+            /*
+             ID'si 50 olan bir kitap (varsayın ki context.Books.Find(50) ile getirdiniz)
+            ve ID'leri 1 ve 3 olan kategoriler (varsayın ki bunlar mevcut) arasında many-to-many 
+            ilişkisi kuran kodu yazın. (Kitap-Kategori ilişkisi BULUNUR ara tablosu ile sağlanıyor 
+            olmalı). 
+            */
+
+            /*
+            var book = context.Books.Include(b => b.Categories).FirstOrDefault(b => b.Id == 50);
+            var kategori1 = context.Categories.Find(1);
+            var kategori3 = context.Categories.Find(3);
+
+            book.Categories.Add(kategori1);
+            book.Categories.Add(kategori3);
+
+            context.SaveChanges();
+            */
+            #endregion
+
+            #region GEMINI Soru 8: Gruplama ve Agregasyon (Grouping & Aggregation)
+
+            //Question
+            /*
+             YAZARLAR ve KITAPLAR tablolarını kullanarak, tüm yazarları (yazar adı ve soyadı) 
+             listeleyin ve yanına o yazarın yazdığı kitap sayısını getirin. Kitap sayısı 
+             azalan sırada sıralanmalıdır.
+             */
+
+
+            //Answer
+            /*
+                var result = context.Authors.
+                    Select(a => new
+                    {
+                        Name = a.Name,
+                        Surname = a.Surname,
+                        TotalBooks = a.Books.Count
+                    })
+                    .OrderByDescending(a => a.TotalBooks)
+                    .AsNoTracking();
+             */
+
+
+            //SQL KARŞILIĞI
+            /*
+                SELECT 
+                        AuthorId,
+                        Authors.Name,
+                        Authors.Surname,
+                        Count(BooksId) as 'Yazarın Toplam Kitap Sayısı'
+                FROM AuthorBook
+                JOIN Authors
+                ON AuthorBook.AuthorId = Authors.Id
+                GROUP BY AuthorId, Authors.Name, Authors.Surname
+            */
+            #endregion
+
+            #region GEMINI Soru 9: Eager Loading (Include)
+            //Question
+            /*
+              Tüm kütüphane kayıtlarını ve bunlara ait adres bilgilerini tek 
+              bir sorguda getirmek istiyorsunuz.Görev: KUTUPHANE varlıklarını
+              sorgulayın ve bu sorguya, ilişkili oldukları ADRESLER varlığını 
+              da tek bir veritabanı sorgusunda getiren(Eager Loading) kodu yazın.
+              Sonuçları listeleyip, her kütüphane için Kütüphane Adını ve Adresindeki 
+              Şehir bilgisini yazdırın.
+            */
+
+            //Answer
+            /*
+                var result = context.Libraries
+                    .Include(b => b.Address)
+                    .AsNoTracking();
+
+                foreach (var item in result)
+                    Console.WriteLine($"{item.Name}, {item.Address.City}");
+            */
+
+            //SQL Karşılığı
+            /*
+             SELECT L.Name, A.City FROM Libraries AS L JOIN Addresses AS A ON L.AddressId = A.ID 
+            */
+            #endregion
+
+            #region GEMINI Soru 10: İlişkisel Silme Kontrolü (Cascade Delete)
+            //QUESTION
+            /*
+             Soru 10: ID'si 2 olan adresi veritabanından silmek üzere işaretleyen
+            kodu yazın. Bu adresin hem bir üyeye hem de bir kütüphaneye ait olduğunu 
+            varsayarsak, bu silme işleminin veritabanı kısıtlamaları veya EF Core model
+            ayarları nedeniyle hangi durumlarda sorun çıkaracağını (ya da Cascade Delete ile 
+            otomatik silineceğini) kodunuzun altında açıklayın.
+            */
+
+            //ANSWER
+            /*
+                var address = context.Addresses.FirstOrDefault(a => a.ID == 2);
+                context.Addresses.Remove(address);
+                context.SaveChanges();
+
+            //• Cascade Delete aktifse → Sorunsuz
+            //• Cascade Delete iki tarafta ise → SQL Multiple Cascade Path hatası verebilir
+            //• Restrict / NoAction ise → Kesinlikle hata verir, silinemez
+            //• Silinebilmesi için: ilişkilerin modelde doğru yapılandırılmış olması gerekir
+             */
+
+            //SQL KARŞILIĞI
+            /*
+                DELETE FROM ADDRESSES WHERE ID = 2
+             */
             #endregion
 
         }
     }
 }
-
