@@ -325,7 +325,7 @@ namespace EFCORE.TRAINING.WITH.AI
 
             //SQL KARŞILIĞI
             /*
-              
+
              SELECT NAME, ISBN FROM BOOKS WHERE PublishedDate >= '2020'
             */
             #endregion
@@ -477,6 +477,52 @@ namespace EFCORE.TRAINING.WITH.AI
              */
             #endregion
 
+            #region GEMINI Soru 11: Bire Çoğa İlişki Sorgusu (1-N)
+
+            //QUESTION
+            /* 
+            Görev: Tüm üyeleri (Ad ve Soyad) ve her üyenin toplam kaç kitap ödünç 
+            aldığını (EMANET kaydı sayısını) listeleyin. Sonuçları ödünç alınan kitap 
+            sayısına göre azalan sırada sıralayın.
+             */
+
+            //ANSWERONE
+            /*
+            var result = context.Deposits
+                .GroupBy(d => d.UserId)
+                .Select(g => new
+                {
+                    NameAndSurname = g.First().User.Name + " " + g.First().User.Surname,
+                    ToplamDeposit = g.Count()
+                });
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.NameAndSurname}, {item.ToplamDeposit}");
+            */
+
+            //ANSWERTWO
+            /*
+            var result = context.Users.Select(d => new
+            {
+                Name = d.Name,
+                Surname = d.Surname,
+                Toplam = d.Deposits.Count()
+            });
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}, {item.Surname}, {item.Toplam}");
+            */
+
+            //SQL KARŞILIĞI
+            // select Name, Surname, Count(Deposits.UserId) from Users join Deposits on Deposits.UserId = Users.Id group by Name,Surname
+            #endregion
+
+            #region GEMINI Soru 12: Çoka Çoğa İlişki Sorgusu (M-N)
+            /*
+                Görev: ID'si 7 olan yazarın yazdığı tüm kitapların ait olduğu 
+                farklı kategorilerin (Ad ve Açıklama) listesini getirin.
+            */
+            #endregion
         }
     }
 }
