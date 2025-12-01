@@ -1,9 +1,6 @@
-﻿using Azure;
-using EFCORE.TRAINING.WITH.AI.EFCORE;
+﻿using EFCORE.TRAINING.WITH.AI.EFCORE;
 using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
-using System.Net.WebSockets;
-using System.Runtime.CompilerServices;
 
 namespace EFCORE.TRAINING.WITH.AI
 {
@@ -507,7 +504,8 @@ namespace EFCORE.TRAINING.WITH.AI
                 Name = d.Name,
                 Surname = d.Surname,
                 Toplam = d.Deposits.Count()
-            });
+            })
+            .OrderByDescending(x => x.Toplam);
 
             foreach (var item in result)
                 Console.WriteLine($"{item.Name}, {item.Surname}, {item.Toplam}");
@@ -518,10 +516,33 @@ namespace EFCORE.TRAINING.WITH.AI
             #endregion
 
             #region GEMINI Soru 12: Çoka Çoğa İlişki Sorgusu (M-N)
+            //QUESTION
             /*
                 Görev: ID'si 7 olan yazarın yazdığı tüm kitapların ait olduğu 
                 farklı kategorilerin (Ad ve Açıklama) listesini getirin.
             */
+
+            //ANSWER
+            /*
+            var result = context.Authors.Where(a => a.Id == 7)
+                .SelectMany(a => a.Books)
+                .SelectMany(b => b.Categories)
+                .Select(c => new
+                {
+                    CategoryName = c.Name,
+                    CategoryDescription = c.Description
+                })
+                .Distinct()
+                .AsNoTracking();
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.CategoryName}, {item.CategoryDescription}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+             select distinct c.Name, c.Description from AuthorBook a join BookCategory bc on a.BooksId = bc.BooksId join Categories c on c.Id = bc.CategoriesId where AuthorId = 15
+             */
             #endregion
         }
     }

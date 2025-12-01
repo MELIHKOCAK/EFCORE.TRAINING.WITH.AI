@@ -8,7 +8,6 @@ public class Book
     public short PageCount { get; set; }
     public DateOnly PublishedDate { get; set; }
 
-    //Foreign Key
 
     //Navigation Property
     public ICollection<Deposit> Deposit { get; set; }
