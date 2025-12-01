@@ -1,6 +1,7 @@
 ﻿using EFCORE.TRAINING.WITH.AI.EFCORE;
 using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace EFCORE.TRAINING.WITH.AI
 {
@@ -543,6 +544,40 @@ namespace EFCORE.TRAINING.WITH.AI
             /*
              select distinct c.Name, c.Description from AuthorBook a join BookCategory bc on a.BooksId = bc.BooksId join Categories c on c.Id = bc.CategoriesId where AuthorId = 15
              */
+            #endregion
+
+            #region GEMINI Soru 13: Agregasyon Ve Filtreleme (Aggregation & Filtering)
+            //QUESTION
+            /*
+                Yalnızca toplam sayfa sayısı 1000'den fazla olan yazarları (Ad ve Soyad)
+                ve bu yazarların kitaplarının toplam sayfa sayısını 
+                (Sayfa Sayısı alanını toplayarak) listeleyin.
+             */
+
+            //ANSWER
+            /*
+             var result = context.Authors
+            .Select(a => new
+                 {
+                     YazarAdSoyad = a.Name + " " + a.Surname,
+                     ToplamSayfaSayisi = a.Books.Sum(b => b.PageCount)
+                 })
+            .Where(r => r.ToplamSayfaSayisi > 1000)
+            .AsNoTracking();
+
+             foreach (var item in result)
+                 Console.WriteLine($"{item.YazarAdSoyad}, {item.ToplamSayfaSayisi}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+            select a.Name, a.Surname, SUM(b.PageCount), a.Id 
+            from Authors a
+            join AuthorBook ab on a.Id = ab.AuthorId
+            join Books b on b.Id = ab.BooksId
+            group by a.Id, a.Name, a.Surname
+            having SUM(b.PageCount) > 1000
+            */
             #endregion
         }
     }

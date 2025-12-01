@@ -7,6 +7,6 @@ public class Author
     public string Surname { get; set; }
 
     //Navigation Property
-    public ICollection<Book> Books { get; set; }
+    public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 }
 
