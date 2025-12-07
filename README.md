@@ -4,8 +4,7 @@
 
 Bu uygulama GEMINI ile birlikte **Entity Framework Core** konusundaki yetkinliğimi soru–cevap yöntemiyle pekiştirmek amacıyla hazırlanmıştır.
 
-Gemini Sohbetinin Linki: https://gemini.google.com/share/a2ce82588876
-
+Gemini Sohbetinin Linki: https://gemini.google.com/share/57ecda4c7c3d
 ### 🛠 Kullanılan Teknolojiler ve Araçlar
 * **.NET** (C#)
 * **Entity Framework Core** (ORM)
