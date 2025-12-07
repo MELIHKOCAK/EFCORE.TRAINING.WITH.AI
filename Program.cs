@@ -192,7 +192,6 @@ namespace EFCORE.TRAINING.WITH.AI
 
 
             //@TODO: Soruları query syntax ile tekrardan çöz.
-            //@TODO: 6. 7. Soruların SQL karşılıklarınıda yaz
             //Questions
             #region GEMINI Soru 1: Ekleme (Create) - Yeni Bir Üye Kaydı
 
@@ -360,6 +359,18 @@ namespace EFCORE.TRAINING.WITH.AI
                 .AsNoTracking()
                 .ToList();
             */
+
+            //SQL KARŞILIĞI
+            /*
+                SELECT U.Name, U.Surname, D.DeliveryDate FROM Deposits D
+                JOIN Users U 
+                ON U.Id = D.UserId
+                JOIN
+                Books B
+                ON
+                B.Id = D.BookId
+                WHERE DeliveryDate IS NULL
+             */
             #endregion
 
             #region GEMINI Soru 7: Çoklu İlişki Ekleme (Many-to-Many)
@@ -380,6 +391,15 @@ namespace EFCORE.TRAINING.WITH.AI
 
             context.SaveChanges();
             */
+
+            //SQL KARŞILIĞI
+            /*
+                INSERT INTO BookCategory (BookID, CategoryID)
+                VALUES (50, 1);
+
+                INSERT INTO BookCategory (BookID, CategoryID)
+                VALUES (50, 3);
+             */
             #endregion
 
             #region GEMINI Soru 8: Gruplama ve Agregasyon (Grouping & Aggregation)
