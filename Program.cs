@@ -599,6 +599,44 @@ namespace EFCORE.TRAINING.WITH.AI
             having SUM(b.PageCount) > 1000
             */
             #endregion
+
+            #region GEMINI Soru 14: İlişkisel Filtreleme ve Kontrol (Any/All)
+            //QUESTION
+            /*
+              Henüz hiçbir kitabının ödünç verilmediği yazarları bulmak istiyorsunuz.
+              Görev: Hiçbir kitabının EMANET tablosunda kaydı bulunmayan yazarların (Ad ve Soyad) 
+              listesini getiren bir sorgu yazın.
+            */
+
+            //ANSWER
+            /*
+            var result = context.Authors
+            .Where(a => a.Books.All(b => !b.Deposit.Any()))
+            .Select(a => new
+            {
+                a.Name,
+                a.Surname
+            })
+            .AsNoTracking()
+            .ToList();
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}, {item.Surname}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+             select A.Name, A.Surname from Authors A
+                Where NOT EXISTS 
+                (
+                    select * FROM AuthorBook AB
+                    JOIN Deposits D ON AB.BooksId = D.BookId
+                    Where AB.AuthorId = A.Id
+                )
+            */
+            #endregion
+
+
         }
     }
 }
