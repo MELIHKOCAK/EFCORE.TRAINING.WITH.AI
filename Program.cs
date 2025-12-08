@@ -636,7 +636,31 @@ namespace EFCORE.TRAINING.WITH.AI
             */
             #endregion
 
+            #region GEMINI Soru 15: Çoklu Şartlı Güncelleme (Bulk Update Simülasyonu)
+            //QUESTION
+            /*
+             Yayın Tarihi 2010'dan küçük olan ve Sayfa Sayısı 150'den az olan tüm kitapların
+            (KITAPLAR tablosu) Sayfa Sayısı değerini 10 artıran kodu yazın. Bu işlemi EF Core'un
+            her varlığı tek tek yükleyip güncelleme (Connected) yöntemini kullanarak yapın.
+            (Bu, normalde Bulk Update ile daha hızlı yapılır, ancak burada EF Core'u pratik ediyoruz.)
+            */
 
+            //ANSWER
+
+            /*
+            var result = context.Books.Where(b => b.PublishedDate.Year < 2010 && b.PageCount < 150);
+
+            foreach (var item in result)
+                item.PageCount += 10;
+
+            context.SaveChanges();
+            */
+
+            //SQL KARŞILIĞI
+            /*
+             UPDATE Books SET PageCount = PageCount+10 where PageCount<170 AND PublishedDate < '01-01-2010'
+            */
+            #endregion
         }
     }
 }
