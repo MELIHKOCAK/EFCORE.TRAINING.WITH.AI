@@ -234,7 +234,7 @@ namespace EFCORE.TRAINING.WITH.AI
              bir sorgu yazın. Sorguyu, kategori adına göre alfabetik olarak sıralayın.
             */
 
-            //ANSWER
+            //METHOD SYNTAX ANSWER
             /*
             var questionTwo = context
                 .Categories
@@ -243,6 +243,20 @@ namespace EFCORE.TRAINING.WITH.AI
                 .AsNoTracking();
 
             foreach (var item in questionTwo)
+                Console.WriteLine($"{item.Id}, {item.Name}");
+            */
+
+            //QUERY SYNTAX ANSWER,
+            /*
+            var result = (from c in context.Categories
+                          orderby c.Name
+                          select new
+                          {
+                              c.Id,
+                              c.Name
+                          })
+                          .AsNoTracking();
+            foreach (var item in result)
                 Console.WriteLine($"{item.Id}, {item.Name}");
             */
 
