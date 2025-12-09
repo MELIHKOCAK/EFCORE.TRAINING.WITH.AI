@@ -1,7 +1,6 @@
 ﻿using EFCORE.TRAINING.WITH.AI.EFCORE;
-using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
-using static System.Reflection.Metadata.BlobBuilder;
+
 
 namespace EFCORE.TRAINING.WITH.AI
 {
@@ -694,6 +693,59 @@ namespace EFCORE.TRAINING.WITH.AI
             //SQL KARŞILIĞI
             /*
              UPDATE Books SET PageCount = PageCount+10 where PageCount<170 AND PublishedDate < '01-01-2010'
+            */
+            #endregion
+
+            #region GEMINI SORU 16: İki Aşırı İlişkide Filtreleme ve Sıralama
+
+            //QUESTION
+            /* 
+              Görev: ID'si 4 olan kategoriye ait tüm kitapları (KITAPLAR tablosundan) bulun. 
+              Bu kitapları Yayın Tarihi'ne göre azalan(en yeniden en eskiye) sırada sıralayın 
+              ve yalnızca kitapların Ad'ını ve Yayın Tarihi'ni listeleyin.
+            */
+
+            //METHOD SYNTAX ANSWER 1
+            /*
+              var result = context.Books
+                 .SelectMany(b => b.Categories, (book, category) => new
+             {
+                 BookName = book.Name,
+                 BookDate = book.PublishedDate,
+                 CategoryId = category.Id,  
+             })
+                 .Where(b => b.CategoryId == 4)
+                 .OrderByDescending(a =>a.BookDate)
+                 .AsNoTracking();
+
+             foreach (var item in result)
+                 Console.WriteLine($"{item.BookName}, {item.BookDate}");
+            */
+
+
+            //METHOD SYNTAX ANSWER 2
+            /*
+            var result = context.Books
+                .AsNoTracking()
+                .Where(b => b.Categories.Any(c => c.Id == 4))
+                .OrderByDescending(b => b.PublishedDate)
+                .Select(b => new
+                {
+                    BookName = b.Name,
+                    BookDate = b.PublishedDate,
+                });
+                
+            foreach (var item in result)
+                Console.WriteLine($"{item.BookName}, {item.BookDate}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                select Books.Name, Books.PublishedDate from Books 
+                join BookCategory
+                on Books.Id = BookCategory.BooksId 
+                where BookCategory.CategoriesId = 4 
+                Order By Books.PublishedDate desc
             */
             #endregion
 
