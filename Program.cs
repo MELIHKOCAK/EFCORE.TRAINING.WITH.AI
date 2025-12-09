@@ -734,7 +734,7 @@ namespace EFCORE.TRAINING.WITH.AI
                     BookName = b.Name,
                     BookDate = b.PublishedDate,
                 });
-                
+
             foreach (var item in result)
                 Console.WriteLine($"{item.BookName}, {item.BookDate}");
             */
@@ -749,7 +749,43 @@ namespace EFCORE.TRAINING.WITH.AI
             */
             #endregion
 
+            #region GEMINI SORU 17: Null Kontrolü ve Varsayılan Değer Atama
+            //QUESTION
+            /*
+              Teslim Tarihi (DeliveryDate) NULL olan tüm emanet kayıtlarını 
+              (ID, Veriliş Tarihi) listeleyin ve sorguya NULL kontrolü yaparak, 
+              Teslim Tarihi yerine (eğer NULL ise) "Teslim Edilmedi" metnini getiren 
+              bir alan ekleyin.
+            */
 
+            //METHOD SYNTAX ANSWER
+            /*
+            var result = context.Deposits
+                .Where(d => d.DeliveryDate == null)
+                .Select(d => new
+                {
+                    EmanetId = d.Id,
+                    VerilisTarihi = d.DepositDate,
+                    TeslimDurumu = d.DeliveryDate == null
+                       ? "Teslim Edilmedi"
+                       : d.DeliveryDate.ToString()
+                });
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.EmanetId}   ---   {item.VerilisTarihi}   ---   {item.TeslimDurumu}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+             select Id, DepositDate ,
+                Case
+                        when DeliveryDate IS NULL then 'Teslim Edilmedi'
+                        else CONVERT(NVARCHAR(MAX), DeliveryDate)
+                    end as TeslimDurumu
+                from Deposits where DeliveryDate is null
+             */
+
+            #endregion
         }
     }
 }
