@@ -273,7 +273,7 @@ namespace EFCORE.TRAINING.WITH.AI
                 ve bu değişikliği veritabanına kaydeden kodu yazın. (ID 5'in var olduğunu varsayıyoruz).
             */
 
-            //Answer
+            //Method Syntax Answer
             /*
             var questionThree = context
             .Authors
@@ -281,6 +281,16 @@ namespace EFCORE.TRAINING.WITH.AI
 
             questionThree.Name = "Ahmet";
 
+            context.SaveChanges();
+            */
+
+            //Query Syntax Answer
+            /*
+            var result = (from item in context.Authors
+                          where item.Id == 5
+                          select item).FirstOrDefault();
+
+            result.Name = "Ahmet";
             context.SaveChanges();
             */
 
@@ -298,12 +308,23 @@ namespace EFCORE.TRAINING.WITH.AI
              * (ID 10'un var olduğunu ve ilişkisel kısıtlamaların buna izin verdiğini varsayıyoruz).
              */
 
-            //ANSWER
+            //METHOD SYNTAX ANSWER
             /*
             var questionFour = context
             .Books
             .FirstOrDefault(b => b.Id == 14);
             context.Books.Remove(questionFour!);
+            context.SaveChanges();
+            */
+
+
+            //QUERY SYNTAX ANSWER
+            /*
+            var result = (from item in context.Books
+                          where item.Id == 10
+                          select item).FirstOrDefault();
+
+            context.Books.Remove(result);
             context.SaveChanges();
             */
 
@@ -675,6 +696,8 @@ namespace EFCORE.TRAINING.WITH.AI
              UPDATE Books SET PageCount = PageCount+10 where PageCount<170 AND PublishedDate < '01-01-2010'
             */
             #endregion
+
+
         }
     }
 }
