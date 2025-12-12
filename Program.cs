@@ -849,6 +849,33 @@ namespace EFCORE.TRAINING.WITH.AI
                 HAVING COUNT(BookCategory.CategoriesId) >=3
              */
             #endregion
+
+            #region GEMINI SORU 19: İlişkisel Veri İle Güncelleme
+            //QUESTION
+            /*
+                ID'si 15 olan üyenin ödünç aldığı ve Teslim Tarihi NULL 
+                olan tüm emanet kayıtlarının Teslim Tarihi alanını DateTime.Today 
+                olarak güncelleyen kodu yazın.
+            */
+
+            //METHOD SYNTAX ANSWER
+            /*
+            var result = context.Deposits
+                .Where(d => d.UserId == 15 && d.DeliveryDate == null)
+                .ToList();
+
+            foreach (var item in result)
+                item.DeliveryDate = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+
+            context.SaveChanges();
+            */
+
+            //SQL KARŞILIĞI
+            /*
+             UPDATE Deposits Set DeliveryDate = '2025-12-12'
+             Where Deposits.UserId = 15 and DeliveryDate IS null
+             */
+            #endregion
         }
     }
 }
