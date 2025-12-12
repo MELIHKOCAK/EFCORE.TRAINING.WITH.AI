@@ -342,7 +342,7 @@ namespace EFCORE.TRAINING.WITH.AI
              * bir sorgu yazın. 
              */
 
-            //ANSWER
+            //METHOD SYNTAX ANSWER
             /*
             var questionFive = context
                 .Books
@@ -354,9 +354,18 @@ namespace EFCORE.TRAINING.WITH.AI
                 Console.WriteLine($"{item.Name}, {item.ISBN}");
             */
 
+            //QUERY SYNTAX ANSWER
+            /*
+            var result = from book in context.Books
+                         where book.PublishedDate.Year >= 2020
+                         select new {book.Name, book.PublishedDate};
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}   ---   {item.PublishedDate}");
+            */
+
             //SQL KARŞILIĞI
             /*
-
              SELECT NAME, ISBN FROM BOOKS WHERE PublishedDate >= '2020'
             */
             #endregion
