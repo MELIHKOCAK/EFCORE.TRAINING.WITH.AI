@@ -422,7 +422,7 @@ namespace EFCORE.TRAINING.WITH.AI
                               bookName = book.Name,
                               depositDate = deposit.DepositDate,
                           };
-              */            
+              */
 
             //SQL KARŞILIĞI
             /*
@@ -815,6 +815,39 @@ namespace EFCORE.TRAINING.WITH.AI
                 from Deposits where DeliveryDate is null
              */
 
+            #endregion
+
+            #region GEMINI SORU 18: Karmaşık İlişkilerde Count Kontrolü
+            //QUESTION
+            /*
+             Senaryo: En az 3 farklı kategoride yer alan kitapları bulmak istiyorsunuz. 
+             Görev: Ait olduğu kategori sayısı 3'e eşit veya daha fazla olan tüm 
+             kitapların (Ad ve ISBN) listesini getirin.
+            */
+
+            //METHOD SYNTAX ANSWER
+            /*
+            var result = context.Books
+                                .Where(b => b.Categories.Count() >= 3)
+                                .Select(b => new
+                                {
+                                    BookName = b.Name,
+                                    ISBN = b.ISBN
+                                })
+                                .AsNoTracking();
+            
+            foreach (var item in result)
+                Console.WriteLine($"{item.BookName}, {item.ISBN}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                SELECT  Books.Name, Books.ISBN 
+                FROM BookCategory 
+                JOIN Books ON BookCategory.BooksId = Books.Id
+                GROUP BY Books.Name, Books.ISBN 
+                HAVING COUNT(BookCategory.CategoriesId) >=3
+             */
             #endregion
         }
     }
