@@ -374,8 +374,12 @@ namespace EFCORE.TRAINING.WITH.AI
 
             //QUESTION
             /*
-             Henüz teslim edilmemiş olan (yani TeslimTarihi alanı NULL olan) tüm emanet
-            kayıtlarını listeleyin.
+             Hangi üyenin (üyelerin) hangi kitabı (kitapları) ödünç aldığını görmek istiyorsunuz.
+             Görev: Henüz teslim edilmemiş olan (yani TeslimTarihi alanı NULL olan) tüm emanet 
+             kayıtlarını listeleyin. Listede her kayıt için aşağıdaki bilgileri getirin:
+             Üye Adı Soyadı (UYELER tablosundan)
+             Kitap Adı (KITAPLAR tablosundan)
+             Veriliş Tarihi (EMANET tablosundan)
             */
 
             //ANSWER
@@ -402,6 +406,23 @@ namespace EFCORE.TRAINING.WITH.AI
                 .AsNoTracking()
                 .ToList();
             */
+
+            //QUERY SYNTAX ANSWER
+            /*
+            var results = from user in context.Users
+                          join deposit in context.Deposits
+                                on user.Id equals deposit.UserId
+                          join book in context.Books
+                                on deposit.BookId equals book.Id
+                          where deposit.DeliveryDate == null
+                          select new
+                          {
+                              userName = user.Name,
+                              userSurname = user.Surname,
+                              bookName = book.Name,
+                              depositDate = deposit.DepositDate,
+                          };
+              */            
 
             //SQL KARŞILIĞI
             /*
