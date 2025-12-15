@@ -512,7 +512,6 @@ namespace EFCORE.TRAINING.WITH.AI
              azalan sırada sıralanmalıdır.
              */
 
-
             //Method Syntax Answer
             /*
                 var result = context.Authors.
@@ -525,6 +524,22 @@ namespace EFCORE.TRAINING.WITH.AI
                     .OrderByDescending(a => a.TotalBooks)
                     .AsNoTracking();
              */
+
+
+            //Query Syntax Answer
+            /*
+            var result = from at in context.Authors
+                         select new
+                         {
+                             Name = at.Name,
+                             Surname = at.Surname,
+                             Deger = at.Books.Count
+                         };
+                         
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}, {item.Surname}, {item.Deger}");
+            */
 
             //SQL KARŞILIĞI
             /*
