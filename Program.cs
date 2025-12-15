@@ -927,6 +927,48 @@ namespace EFCORE.TRAINING.WITH.AI
              Where Deposits.UserId = 15 and DeliveryDate IS null
              */
             #endregion
+
+            #region GEMINI SORU 20: Dış Birleştirme (Left Join Simülasyonu)
+            //QUESTION
+            /*
+                Tüm kütüphaneleri (Kütüphane Adı) listeleyin ve yanına o kütüphanede 
+                bulunan farklı kitap sayısını getirin. Kitabı hiç bulunmayan kütüphaneler 
+                bile listede olmalı ve kitap sayısı sıfır olarak görünmelidir.
+             */
+
+            //NOT:
+            /*  Not: Çoka Çok ilişki bulunan entitylerde foreign key bulunmuyor ise sorgulama 
+                işlemleri navigation property üzerinden olur.
+               
+                Çok çok ilişkide, bir entitydeki diğer tablo ile bağlantıyı sağlayan navigation
+                propertyde group by kurmadan agregasyon fonksiyonlarını çalıştırabiliriz.
+                
+                Örnek:  1- Bir öğrencinin aldığı toplam ders sayısı
+                        2- Bir ürünün bulunduğu toplam kategori sayısı
+            */
+
+            //METHOD SYNTAX ANSER
+            /*
+            var result = context.Libraries
+                .AsNoTracking()
+                .Select(l => new
+                {
+                    KutuphaneAdi = l.Name,
+                    FarkliKitapSayisi = l.Books.Count
+                });
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.KutuphaneAdi}, {item.FarkliKitapSayisi}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                select L.Name, Count(LB.BookId)
+                from Libraries L left join LibraryBooks LB
+                on L.Id = LB.LibraryId 
+                group by L.Name
+             */
+            #endregion
         }
     }
 }
