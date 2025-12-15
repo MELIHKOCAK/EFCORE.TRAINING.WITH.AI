@@ -11,7 +11,7 @@ public class Book
 
     //Navigation Property
     public ICollection<Deposit> Deposit { get; set; }
-    public ICollection<Category> Categories { get; set; }
+    public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
     public ICollection<Author> Author { get; set; } 
     public ICollection<Library> Libraries { get; set; }
 }

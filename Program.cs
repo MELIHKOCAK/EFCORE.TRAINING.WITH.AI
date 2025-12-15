@@ -1,12 +1,14 @@
 ﻿using EFCORE.TRAINING.WITH.AI.EFCORE;
+using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 
 namespace EFCORE.TRAINING.WITH.AI
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //Chat's Link On Gemini: https://gemini.google.com/share/a2ce82588876
 
@@ -445,6 +447,7 @@ namespace EFCORE.TRAINING.WITH.AI
             olmalı). 
             */
 
+            //METHOD SYNTAX ANSWER
             /*
             var book = context.Books.Include(b => b.Categories).FirstOrDefault(b => b.Id == 50);
             var kategori1 = context.Categories.Find(1);
@@ -452,6 +455,40 @@ namespace EFCORE.TRAINING.WITH.AI
 
             book.Categories.Add(kategori1);
             book.Categories.Add(kategori3);
+
+            context.SaveChanges();
+            */
+
+            //QUERY SYNTAX ANSWER -> Bu çözüm aşırı zorlama ve saçma olduğunu biliyorum, hiç bir yerde kullanılmayacağını tahmin ediyorum lakin farklı düşünmek amaçlı uyguladım.
+            /*
+            Book oneBook = default!;
+            Category categoryOne = default!;
+            Category categoryThree = default!;
+
+            var book = (from bk in context.Books
+                              where bk.Id == 13
+                              select bk)
+                              .Include(b => b.Categories);
+
+            foreach (Book item in book)
+                oneBook = item;
+
+            var kategori1 = (from ct in context.Categories
+                                       where ct.Id == 13
+                                       select ct);
+
+            var kategori3 = (from ct in context.Categories
+                                       where ct.Id == 14
+                                       select ct);
+
+            foreach (Category item in kategori1)
+                categoryOne = item;
+
+            foreach (Category item in kategori3)
+                categoryThree = item;
+
+            oneBook.Categories.Add(categoryOne);
+            oneBook.Categories.Add(categoryThree);
 
             context.SaveChanges();
             */
@@ -476,7 +513,7 @@ namespace EFCORE.TRAINING.WITH.AI
              */
 
 
-            //Answer
+            //Method Syntax Answer
             /*
                 var result = context.Authors.
                     Select(a => new
@@ -488,7 +525,6 @@ namespace EFCORE.TRAINING.WITH.AI
                     .OrderByDescending(a => a.TotalBooks)
                     .AsNoTracking();
              */
-
 
             //SQL KARŞILIĞI
             /*
