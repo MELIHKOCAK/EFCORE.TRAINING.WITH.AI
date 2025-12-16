@@ -969,6 +969,37 @@ namespace EFCORE.TRAINING.WITH.AI
                 group by L.Name
              */
             #endregion
+
+            #region GEMINI SORU 21: Basit Join ve Filtreleme (Kolay)
+            //QUESTION
+            /*
+                Ankara'da bulunan kütüphanelerde hangi kitapların bulunduğunu 
+                görmek istiyorsunuz. Görev: ADRESLER ve KUTUPHANE tablolarını 
+                kullanarak, adresi Şehir='Ankara' olan tüm kütüphanelerin ID'lerini 
+                listeleyin. (Kitap listelemeye gerek yok, sadece kütüphane ID'leri yeterli).
+             */
+
+            //METHOD SYNTAX
+            //Birinci Yöntem
+            /*
+            var result1 = context.Addresses
+                .Where(a => a.City == "Ankara")
+                .Join(context.Libraries, a => a.ID, l => l.AddressId, (address, library) => new
+                {
+                    libraryId = library.Id
+                });
+            
+            //İkinci Yöntem
+            var result2 = context.Libraries
+                .Where(a => a.Address.City == "Tokat");
+
+            foreach (var item in result1)
+                Console.WriteLine($"{item.libraryId}");
+            */
+
+            //SQL KARŞILIĞI
+           /* select L.Id from Libraries L join Addresses A on L.AddressId = A.ID where A.City = 'tokat' */
+            #endregion
         }
     }
 }
