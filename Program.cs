@@ -998,7 +998,42 @@ namespace EFCORE.TRAINING.WITH.AI
             */
 
             //SQL KARŞILIĞI
-           /* select L.Id from Libraries L join Addresses A on L.AddressId = A.ID where A.City = 'tokat' */
+            /* select L.Id from Libraries L join Addresses A on L.AddressId = A.ID where A.City = 'tokat' */
+            #endregion
+
+            #region GEMINI SORU 22: Count ile Basit Gruplama (Kolay/Orta)
+            //QUESTION
+            /*
+                EMANET tablosunu kullanarak, kitapların ödünç verildiği yıl ve
+                ay bazında gruplama yapın ve her gruptaki toplam emanet sayısını 
+                listeleyin. Sonuçları emanet sayısına göre azalan sırada sıralayın.
+            */
+
+            //METHOD SYNTAX ANSWER
+            /*
+            var result = context.Deposits
+                .GroupBy(d => new { d.DepositDate.Year, d.DepositDate.Month })
+                .Select(g => new
+                {
+                    Yıl = g.Key.Year,
+                    Ay = g.Key.Month,
+                    Sayı = g.Count()
+                })
+                .OrderByDescending(a => a.Sayı);
+
+            foreach (var item in result)
+            {
+                Console.WriteLine($"{item.Yıl}   ---   {item.Ay}   ---   {item.Sayı}");
+            }
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                select count(*) KITAPSAYISI, DatePart(YEAR,DepositDate) AS YIL,
+                DatePart(MONTH,DepositDate) AS AY 
+                from Deposits 
+                group by DatePart(YEAR,DepositDate), DatePart(MONTH,DepositDate)
+            */
             #endregion
         }
     }
