@@ -679,7 +679,7 @@ namespace EFCORE.TRAINING.WITH.AI
                 farklı kategorilerin (Ad ve Açıklama) listesini getirin.
             */
 
-            //ANSWER
+            //METHOD SYNTAX ANSWER
             /*
             var result = context.Authors.Where(a => a.Id == 7)
                 .SelectMany(a => a.Books)
@@ -694,6 +694,23 @@ namespace EFCORE.TRAINING.WITH.AI
 
             foreach (var item in result)
                 Console.WriteLine($"{item.CategoryName}, {item.CategoryDescription}");
+            */
+
+            //Query Syntax Anser
+            /*
+            var result = (from a in context.Authors
+                          where a.Id == 13
+                          from b in a.Books        
+                          from c in b.Categories
+                          select new
+                          {
+                              CategoryName = c.Name,
+                              CategoryDescription = c.Description
+                          })
+              .Distinct();
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.CategoryName}  {item.CategoryDescription}");
             */
 
             //SQL KARŞILIĞI
