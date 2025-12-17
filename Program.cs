@@ -619,7 +619,7 @@ namespace EFCORE.TRAINING.WITH.AI
             sayısına göre azalan sırada sıralayın.
              */
 
-            //ANSWERONE
+            //METHOD SYNTAX ANSWER ONE
             /*
             var result = context.Deposits
                 .GroupBy(d => d.UserId)
@@ -633,7 +633,7 @@ namespace EFCORE.TRAINING.WITH.AI
                 Console.WriteLine($"{item.NameAndSurname}, {item.ToplamDeposit}");
             */
 
-            //ANSWERTWO
+            //METHOD SYNTAX ANSWER TWO
             /*
             var result = context.Users.Select(d => new
             {
@@ -646,6 +646,27 @@ namespace EFCORE.TRAINING.WITH.AI
             foreach (var item in result)
                 Console.WriteLine($"{item.Name}, {item.Surname}, {item.Toplam}");
             */
+
+            //Query Syntax Answer
+            /*
+            var result = from us in context.Deposits
+                         group us by new
+                         {
+                             us.UserId,
+                             us.User.Name,
+                             us.User.Surname
+                         } into ud orderby ud.Count() descending
+                         select new
+                         {
+                             Name = ud.Key.Name,
+                             Surname = ud.Key.Surname,
+                             Count = ud.Count()
+                         };
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}, {item.Surname}, {item.Count}");
+            */
+
 
             //SQL KARŞILIĞI
             // select Name, Surname, Count(Deposits.UserId) from Users join Deposits on Deposits.UserId = Users.Id group by Name,Surname
