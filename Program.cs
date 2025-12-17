@@ -1073,6 +1073,54 @@ namespace EFCORE.TRAINING.WITH.AI
                 group by DatePart(YEAR,DepositDate), DatePart(MONTH,DepositDate)
             */
             #endregion
+
+            #region GEMINI SORU 23: Sum ile İlişkisel Gruplama (Orta)
+            //QUESTION
+            /*
+               Her kategoriyi (Ad) listeleyin ve o kategoriye ait tüm
+               kitapların toplam sayfa sayısını (Sayfa Sayısı alanını
+               toplayarak) yanına getirin.
+            */
+
+            //Method Syntax Answer 1
+            /*
+            var result = context.Categories
+                .SelectMany(c => c.Books, (category, book) => new
+                {
+                    CategoryId = category.Id,
+                    CategoryName = category.Name,
+                    PageCount = book.PageCount,
+                })
+                .GroupBy(c => new { c.CategoryId, c.CategoryName })
+                .Select(a => new
+                {
+                    Name = a.Key.CategoryName,
+                    ToplamSayfaSayisi = a.Sum(a => a.PageCount)
+                });
+
+            //Method Syntax Answer 2
+            var result2 = context.Categories
+                .Select(c => new
+                {
+                    Name = c.Name,
+                    ToplamSayfaSayisi = c.Books.Sum(b => b.PageCount)
+                });
+
+            foreach (var item in result)
+            {
+                Console.WriteLine($"{item.Name} {item.ToplamSayfaSayisi}");
+            }
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                select C.Name, Sum(B.PageCount) from Categories C 
+                join BookCategory BC on bc.CategoriesId = C.Id
+                join Books B on B.Id =BC.BooksId
+                group by C.Id, C.Name
+             */
+            #endregion
+
         }
     }
 }
