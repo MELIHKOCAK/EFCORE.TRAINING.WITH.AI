@@ -1,6 +1,7 @@
 ﻿using EFCORE.TRAINING.WITH.AI.EFCORE;
 using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Threading.Tasks;
 
 
@@ -1153,6 +1154,48 @@ namespace EFCORE.TRAINING.WITH.AI
              */
             #endregion
 
+            #region GEMINI SORU 24: Üçlü Join ile Count Kontrolü (Orta)
+            //QUESTION
+            /*
+             Soru 24: ID'si 2 olan kategoriye ait olan, ve o kitabı en az 
+             2 farklı üyenin ödünç aldığı kitapların (Ad ve ISBN) listesini 
+             getirin. (Kitap -> Kategori -> Emanet -> Üye zincirini düşünün).
+             */
+
+            //METHOD SYNTAX ANSWER
+            /*
+            var result = context.Categories
+                .Where(a => a.Id == 2)
+                .SelectMany(c => c.Books)
+                .SelectMany(b => b.Deposit)
+                .GroupBy(a => new { a.Book.ISBN, a.Book.Name })
+                .Where(a => a.Select(x => x.UserId).Distinct().Count() >= 2)
+                .Select(g => new
+                {
+                    Name = g.Key.Name,
+                    Isbn = g.Key.ISBN,
+                });
+
+            foreach (var item in result)
+            {
+                Console.WriteLine($"{item.Name}, {item.Isbn}");
+            }
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                select B.ISBN, B.Name from Books B 
+                join BookCategory BC 
+                on B.Id = BC.BooksId 
+                join Deposits D 
+                on BC.BooksId = D.BookId
+                join Users U
+                on D.UserId = U.Id
+                Where BC.CategoriesId =2
+                Group By  B.ISBN, B.Name
+                having COUNT(DISTINCT D.UserId) >= 2
+             */
+            #endregion
         }
     }
 }
