@@ -727,7 +727,7 @@ namespace EFCORE.TRAINING.WITH.AI
                 (Sayfa Sayısı alanını toplayarak) listeleyin.
              */
 
-            //ANSWER
+            //METHOD SYNTAX ANSWER
             /*
              var result = context.Authors
             .Select(a => new
@@ -740,6 +740,21 @@ namespace EFCORE.TRAINING.WITH.AI
 
              foreach (var item in result)
                  Console.WriteLine($"{item.YazarAdSoyad}, {item.ToplamSayfaSayisi}");
+            */
+
+            //Query Syntax Answer
+            /*
+            var result = from au in context.Authors
+                         let totalPages = au.Books.Sum(b => b.PageCount)
+                         where totalPages > 10
+                         select new
+                         {
+                             YazarAdSoyad = au.Name + " " + au.Surname,
+                             ToplamSayfaSayisi = totalPages
+                         };
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.YazarAdSoyad}, {item.ToplamSayfaSayisi}");
             */
 
             //SQL KARŞILIĞI
