@@ -1196,6 +1196,55 @@ namespace EFCORE.TRAINING.WITH.AI
                 having COUNT(DISTINCT D.UserId) >= 2
              */
             #endregion
+
+            #region GEMINI SORU 25: Koşullu Agregasyon ve Filtreleme (Orta)
+            //QUESTION
+            /*
+             Tüm yazarların (Ad ve Soyad) yazdığı kitapların ortalama
+             sayfa sayısını hesaplayın. Ardından, bu ortalama sayfa sayısı
+             300'den büyük olan yazarları listeleyin ve sonuçları ortalama 
+             sayfa sayısına göre azalan sırada sıralayın.
+            */
+
+            //METHOD SYNTAX ANSWER
+            /*
+             //Birinci Çözüm
+            var result = context.Authors
+                .Select(a => new
+                {
+                    Name = a.Name,
+                    Surname = a.Surname,
+                    PageCount = a.Books.Average(b => b.PageCount) 
+                })
+                .Where(a => a.PageCount > 300)
+                .OrderByDescending(a => a.PageCount);
+            
+            //İkinci Çözüm
+             var result2 = context.Authors
+                .Select(a => new
+                {
+                    Name = a.Name,
+                    Surname = a.Surname,
+                    PageCount = a.Books.Any() ? a.Books.Average(b => b.PageCount) : 0
+                })
+                .Where(a => a.PageCount > 300)
+                .OrderByDescending(a => a.PageCount);
+            
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}, {item.Surname}");
+            */
+
+            //SQL KARŞILIĞI
+            /*
+                select A.Name, A.Surname, AVG(B.PageCount) from Authors A join AuthorBook AB 
+                on A.Id = AB.AuthorId
+                join Books B
+                on AB.BooksId = B.Id
+                GROUP BY A.Name, A.Surname
+                having AVG(B.PageCount)>300
+                order by AVG(B.PageCount) desc
+             */
+            #endregion
         }
     }
 }
