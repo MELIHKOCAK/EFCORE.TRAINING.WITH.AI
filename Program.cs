@@ -792,6 +792,23 @@ namespace EFCORE.TRAINING.WITH.AI
                 Console.WriteLine($"{item.Name}, {item.Surname}");
             */
 
+            //QUERY SYNTAX ANSWER
+            /*
+             var result = (from a in context.Authors
+              where a.Books.All(b => !b.Deposit.Any())
+              select new
+              {
+                  a.Name,
+                  a.Surname
+              })
+              .AsNoTracking()
+              .ToList();
+
+            foreach (var item in result)
+                Console.WriteLine($"{item.Name}, {item.Surname}");
+             
+             */
+
             //SQL KARŞILIĞI
             /*
              select A.Name, A.Surname from Authors A
