@@ -2,6 +2,7 @@
 using EFCORE.TRAINING.WITH.AI.EFCORE.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Identity.Client;
 using System.Threading.Tasks;
 
 
@@ -1245,6 +1246,24 @@ namespace EFCORE.TRAINING.WITH.AI
                 order by AVG(B.PageCount) desc
              */
             #endregion
+
+            #region GEMINI SORU 26: Entity State (Varlık Durumları) - Kolay
+            //QUESTION
+            /*
+                Senaryo: context.Users.Add(newUser); satırını çalıştırdınız ama
+                henüz context.SaveChanges(); yapmadınız. Görev: Bu aşamada newUser
+                nesnesinin EntityState değeri nedir? SaveChanges() metodu çalıştıktan
+                sonra bu durum neye dönüşür?
+             */
+
+            //ANSWER
+            /*
+                Bir nesne oluşturulup context nesnesi üzerinden ekleniyor ve Savechanges() metodu çağrılmadan önce
+                "Added" olarak işaretlenir. Eğer ekleme işleminden Savechanges() metodu çağırılırsa "Unchanged" Olarak işaretlenir.
+             */
+            #endregion
+
+            
         }
     }
 }
