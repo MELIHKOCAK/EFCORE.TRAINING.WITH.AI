@@ -1263,7 +1263,28 @@ namespace EFCORE.TRAINING.WITH.AI
              */
             #endregion
 
-            
+            #region GEMINI SORU 27: Change Tracker Mekanizması - Kolay/Orta
+            //QUESTION
+            /*
+                Senaryo: Veritabanından bir kitap çektiniz: var book = context.Books.First(); 
+                Görev: EF Core bu nesne üzerinde yaptığınız değişiklikleri 
+                (örneğin book.Name = "Yeni Ad") nasıl takip eder? Bu takip mekanizmasının adı
+                nedir ve bellekte bu işlemi kim yönetir?
+            */
+
+            //ANSWER
+            /*
+                DbContext nesnesi üzerinden gelen her veri ChangeTracker mekanizması tarafından otomatik
+                olarak takip edilmektedir.
+                
+                Changer tracker mekanizması aksi belirtilmediği sürece veri tabanından belleğe aldığı
+                her veriyi "Unchanged" olarak işaretler ardından yapılan işleme göre(Added, Deleted vb.)
+                işaretini değiştirir. DbContext nesnsi üzerinden SaveChanges() metodu çağırıldığında ise SQL
+                sorgusu üretilip veri tabanına gönderilir.
+                
+                Bellekte bu işlemi yöneten ise DbContext Nesnesidir.
+            */
+            #endregion
         }
     }
 }
