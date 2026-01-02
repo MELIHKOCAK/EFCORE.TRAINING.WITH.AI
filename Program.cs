@@ -1307,6 +1307,26 @@ namespace EFCORE.TRAINING.WITH.AI
              sonucu Dbcontext üzerinden gelecek veri takip edilmeyecek ve güncelle, silme işlemleri gerçekleştirilmeyecektir.
              */
             #endregion
+
+            #region GEMINI SORU 29: Lazy vs Eager Loading Farkı - Orta
+            //QUESTION
+            /*
+             Senaryo: KUTUPHANE (Library) tablosunu çekerken yanındaki ADRESLER (Address) verisine de 
+             ihtiyacınız var. Görev: 1. Include kullanarak veri çekmenin adı nedir? 2. Eğer Include 
+             kullanmazsanız ve kodun devamında library.Address.City derseniz (ve Lazy Loading kapalıysa)
+             ne olur?
+             */
+
+            //ANSWER
+            /*
+             GÖREV 1 : INCLUDE kullanarak veri çekmenin adı "EAGER LOADING" dir zaten default olarak
+             Eager Loading seçilidir. Eğer include metodu ile ilişkili tablonun navigation
+             property'sini kullanırsak ilişkili entity'nin verileri direkt yüklenir. Lazy loadingde ise
+             navigation property'e erişildiğinde ilişkili entity'nin verileri yüklenir.
+
+             GÖREV 2 : veri tabanında veri çekilmediği için NullReferenceException hatası fırlatılır.
+             */
+            #endregion
         }
     }
 }
