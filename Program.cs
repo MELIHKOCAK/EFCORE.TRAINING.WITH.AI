@@ -1285,6 +1285,28 @@ namespace EFCORE.TRAINING.WITH.AI
                 Bellekte bu işlemi yöneten ise DbContext Nesnesidir.
             */
             #endregion
+
+            #region GEMINI Soru 28: AsNoTracking Etkisi - Orta
+            //QUESTION
+            /*
+             Senaryo: Aşağıdaki kod satırını çalıştırdınız: 
+                    var user = context.Users.AsNoTracking().FirstOrDefault(u => u.Id == 1); 
+                    user.Name = "Güncel Ad"; 
+                    context.SaveChanges(); 
+             Görev: Veritabanındaki kullanıcının adı güncellenir mi? Nedenini EF Core'un davranış
+             biçimine göre açıklayın.
+             */
+
+            //ANSWER
+            /*
+             Güncellenmez çünkü EF CORE ORM paketi güncelleme işlemini "tracker" olarak adlandırılan izleme
+             mekanizması ile yapar. Db Context üzerinden gelen her veri default olarak izlenir eğer bir değişiklik
+             yapılırsa EntityState durumu değişir ve .SaveChanges() fonskiyonu çağrıldığında ise EntityState değeri
+             "Modified" ise sql cümlesi oluşturulup veri tabanına gönderilir. Eğer yukarıda anlatılan default durumu
+             .AsNoTracknig() fonksiyonu ile değiştirirseniz(yani EntityState durumunu "detached" yaparsanız) sorgu 
+             sonucu Dbcontext üzerinden gelecek veri takip edilmeyecek ve güncelle, silme işlemleri gerçekleştirilmeyecektir.
+             */
+            #endregion
         }
     }
 }
