@@ -1327,6 +1327,25 @@ namespace EFCORE.TRAINING.WITH.AI
              GÖREV 2 : veri tabanında veri çekilmediği için NullReferenceException hatası fırlatılır.
              */
             #endregion
+
+            #region Soru 30: SaveChanges ve Transaction - Orta
+            //QUESTION
+            /*
+             Senaryo: Aynı SaveChanges() çağrısı içinde 3 tane yeni 
+             kitap ekliyor ve 1 tane yazar siliyorsunuz. Görev: Eğer
+             kitapları eklerken bir hata oluşursa, yazar silme işlemi 
+             gerçekleşir mi? SaveChanges() metodunun Atomicity (Atomiklik) 
+             davranışı hakkında ne söyleyebilirsiniz?
+             */
+
+            //ANSWER
+            /*
+             EF CORE'un SaveChanges metodu çağrılana kadar yapılan tüm işlemleri 
+             tek bir transaction içerisinde toplar ve transactionı yönetir. Eğer bir 
+             işlem başarısız olursa veri tabanının bütünlüğünü sağlamak adına transactionı 
+             rollback yapar. Bu durumda atomicity presibine uyduğunu göstermektedir.
+             */
+            #endregion
         }
     }
 }
